@@ -1,7 +1,7 @@
+
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using PROG7311_WebApp.Models;
-using PROG7311_WebApp.Services;
+using PROG7311_WebApp.Models; 
 
 namespace PROG7311_WebApp.Controllers
 {
@@ -9,23 +9,10 @@ namespace PROG7311_WebApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private readonly UserService _userService;
-
-        public HomeController(ILogger<HomeController> logger, UserService userService)
+        
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _userService = userService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateUser(User user)
-        {
-            if (ModelState.IsValid)
-            {
-                await _userService.AddAsync(user);
-                return RedirectToAction("Index");
-            }
-            return View("Index");
         }
 
         public IActionResult Index()
@@ -33,11 +20,6 @@ namespace PROG7311_WebApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Privacy()
-        {
-            var users = await _userService.GetAllAsync();
-            return View(users);
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

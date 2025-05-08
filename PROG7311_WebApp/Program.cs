@@ -1,43 +1,73 @@
+using Microsoft.AspNetCore.Identity; 
 using Microsoft.EntityFrameworkCore;
 using PROG7311_WebApp.Data;
-using PROG7311_WebApp.Services;
+using PROG7311_WebApp.Models;
 
-namespace PROG7311_WebApp
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(connectionString)); 
+
+// Configure ASP.NET Core Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options => 
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+    // Password settings
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = false; 
+    options.Password.RequireUppercase = false;      
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 1;
 
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    // Lockout settings
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+    // User settings
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true; // Ensure emails are unique
+})
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders() // For password reset, email confirmation tokens
+.AddDefaultUI(); // If you want to use the default Identity UI pages (optional for this step)
 
-            builder.Services.AddScoped<UserService>();
+// Configure application cookie
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // Cookie settings
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // How long the login session lasts
+    options.LoginPath = "/Account/Login";       // If not authenticated, redirect here
+    options.AccessDeniedPath = "/Account/AccessDenied"; // If authorised but access denied to a resource
+    options.SlidingExpiration = true; // Resets expiration on activity
+});
 
-            builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite("Data Source=Local.db"));
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages(); // If you use AddDefaultUI() for Identity pages, or plan to use Razor Pages
 
-            var app = builder.Build();
+var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
-
-            app.Run();
-        }
-    }
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Home/Error");
+    
 }
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseAuthentication(); 
+app.UseAuthorization();  
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages(); 
+
+app.Run();
