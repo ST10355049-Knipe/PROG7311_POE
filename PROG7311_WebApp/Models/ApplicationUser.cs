@@ -10,6 +10,6 @@ namespace PROG7311_WebApp.Models
         public string? FullName { get; set; }
 
         // Navigation property for products (if the user is a farmer)
-       // public virtual ICollection<Product>? Products { get; set; }
+        public virtual ICollection<Product>? Products { get; set; }
     }
 }
