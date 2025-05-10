@@ -19,13 +19,7 @@ namespace PROG7311_WebApp.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
-
-            // Configuration for Product entity and its relationship with ApplicationUser
-            // will be added here in the next step.
-            // Configure the Product entity
+            
             builder.Entity<Product>(entity =>
             {
                 entity.HasKey(e => e.Id);
