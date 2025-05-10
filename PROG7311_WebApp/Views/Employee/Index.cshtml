@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Employee Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<p>Welcome, Employee! From here you can manage various aspects of the platform.</p>
+
+<div>
+    <a asp-action="AddFarmer" class="btn btn-primary">Add New Farmer</a>
+    @* More links can be added here later, e.g., "View All Farmers", "View All Products" *@
+</div>

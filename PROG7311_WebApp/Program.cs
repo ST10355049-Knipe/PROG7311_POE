@@ -33,7 +33,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 })
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders() // For password reset, email confirmation tokens
-.AddDefaultUI(); // If you want to use the default Identity UI pages (optional for this step)
+.AddDefaultUI(); 
 
 // Configure application cookie
 builder.Services.ConfigureApplicationCookie(options =>
