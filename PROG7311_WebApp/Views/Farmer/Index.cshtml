@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Farmer Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<p>@ViewData["WelcomeMessage"]</p>
+<p>From here you can manage your products.</p>
+
+<div>
+    <a asp-action="AddProduct" class="btn btn-primary">Add New Product</a>
+    <a asp-action="MyProducts" class="btn btn-info">View My Products</a>
+</div>

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PROG7311_WebApp.Data;
 using PROG7311_WebApp.Models;
+using PROG7311_WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages(); // If you use AddDefaultUI() for Identity pages, or plan to use Razor Pages
+builder.Services.AddScoped<IProductService, ProductService>(); // Register the ProductService for dependency injection
 
 var app = builder.Build();
 

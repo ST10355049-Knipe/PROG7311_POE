@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using PROG7311_WebApp.Models 
+@using PROG7311_WebApp.Models // Required for ApplicationUser
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -31,11 +31,29 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        @if (User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("Employee"))
+
+                        @* Role-specific navigation links *@
+                        @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee Dashboard</a>
-                            </li>
+                            @if (User.IsInRole("Employee"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee Dashboard</a>
+                                </li>
+                            }
+
+                            @if (User.IsInRole("Farmer"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="Index">Farmer Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="AddProduct">Add Product</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Farmer" asp-action="MyProducts">My Products</a>
+                                </li>
+                            }
                         }
                     </ul>
 
@@ -71,7 +89,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - PROG7311_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; @DateTime.Now.Year - PROG7311_WebApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -1,0 +1,40 @@
+﻿@model PROG7311_WebApp.Models.AddProductViewModel
+@{
+    ViewData["Title"] = "Add New Product";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="AddProduct" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Name" class="form-control" placeholder="Enter product name" />
+                <label asp-for="Name"></label>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="Category" class="form-control" placeholder="Enter category (e.g., Fruit, Vegetable, Dairy)" />
+                <label asp-for="Category"></label>
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input asp-for="ProductionDate" class="form-control" />
+                <label asp-for="ProductionDate"></label>
+                <span asp-validation-for="ProductionDate" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Product</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
