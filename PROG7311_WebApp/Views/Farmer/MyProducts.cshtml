@@ -1,0 +1,67 @@
+﻿@model IEnumerable<PROG7311_WebApp.Models.Product>
+@{
+    ViewData["Title"] = "My Products";
+}
+
+<h2>@ViewData["Title"]</h2>
+<hr />
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.SuccessMessage
+    </div>
+}
+
+<p>
+    <a asp-action="AddProduct" class="btn btn-primary">Add New Product</a>
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Category)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductionDate)
+                </th>
+                @*<th>Actions</th>*@ @* Placeholder for future Edit/Delete links *@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductionDate)
+                    </td>
+                    @*
+            <td>
+            <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">Edit</a> |
+            <a asp-action="ProductDetails" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info">Details</a> |
+            <a asp-action="DeleteProduct" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+            *@
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info" role="alert">
+        You have not added any products yet. <a asp-action="AddProduct">Click here to add your first product!</a>
+    </div>
+}

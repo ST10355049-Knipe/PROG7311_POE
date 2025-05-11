@@ -80,6 +80,27 @@ namespace PROG7311_WebApp.Controllers
             // If ModelState is invalid, return the view with the model to display validation errors
             return View(model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> MyProducts()
+        {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null)
+            {
+                _logger.LogWarning("User not found while trying to view their products.");
+                return Challenge(); // Or redirect to login
+            }
+
+            // Use the ProductService to get products for the current farmer
+            var products = await _productService.GetProductsByFarmerIdAsync(currentUser.Id);
+
+            if (TempData["SuccessMessage"] != null)
+            {
+                ViewBag.SuccessMessage = TempData["SuccessMessage"]; // Pass success message from AddProduct
+            }
+
+            return View(products); // Pass the list of products to the view
+        }
     }
 }
     
