@@ -57,5 +57,72 @@ namespace PROG7311_WebApp.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Product>> GetFilteredProductsAsync(
+            string? selectedFarmerId = null,
+            string? productType = null,
+            DateTime? startDate = null,
+            DateTime? endDate = null)
+        {
+            try
+            {
+                // Using AsQueryable() allows me to build the query dynamically before execution
+                var query = _context.Products.Include(p => p.Farmer).AsQueryable();
+
+                // Apply filters conditionally
+                if (!string.IsNullOrEmpty(selectedFarmerId))
+                {
+                    query = query.Where(p => p.FarmerId == selectedFarmerId);
+                }
+
+                var trimmedProductType = productType?.Trim().ToLower();
+
+                if (!string.IsNullOrEmpty(trimmedProductType))
+                {
+                    query = query.Where(p => p.Category != null && p.Category.ToLower() == trimmedProductType);
+                }
+
+                if (startDate.HasValue)
+                {
+                    // Ensure the product's production date is on or after the startDate
+                    query = query.Where(p => p.ProductionDate >= startDate.Value.Date);
+                }
+
+                if (endDate.HasValue)
+                {
+                    // Ensure the product's production date is on or before the endDate
+                    // Adding .AddDays(1).Date makes the endDate inclusive for the whole day
+                    query = query.Where(p => p.ProductionDate < endDate.Value.Date.AddDays(1));
+                }
+
+                // Order the results
+                return await query.OrderBy(p => p.Farmer != null ? p.Farmer.FullName : string.Empty)
+                                  .ThenBy(p => p.Name)
+                                  .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving filtered products.");
+                return Enumerable.Empty<Product>();
+            }
+        }
+
+        //get distinct categories
+        public async Task<IEnumerable<string>> GetDistinctProductCategoriesAsync()
+        {
+            try
+            {
+                return await _context.Products
+                                     .Select(p => p.Category)
+                                     .Distinct()
+                                     .OrderBy(category => category)
+                                     .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error retrieving distinct product categories.");
+                return Enumerable.Empty<string>();
+            }
+        }
     }
 }

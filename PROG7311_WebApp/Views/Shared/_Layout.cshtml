@@ -40,6 +40,12 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee Dashboard</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="ViewAllProducts">View All Products</a>
+                                    </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="AddFarmer">Add Farmer</a>
+                                </li>
                             }
 
                             @if (User.IsInRole("Farmer"))

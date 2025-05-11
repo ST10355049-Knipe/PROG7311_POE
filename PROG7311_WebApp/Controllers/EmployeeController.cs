@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization; // Required for the [Authorize] attribute
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PROG7311_WebApp.Models; 
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PROG7311_WebApp.Models;
+using PROG7311_WebApp.Services;
 using System.Threading.Tasks;
 
 namespace PROG7311_WebApp.Controllers
@@ -11,12 +13,14 @@ namespace PROG7311_WebApp.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<EmployeeController> _logger;
+        private readonly IProductService _productService; 
 
         // Constructor to inject UserManager and ILogger
-        public EmployeeController(UserManager<ApplicationUser> userManager, ILogger<EmployeeController> logger)
+        public EmployeeController(UserManager<ApplicationUser> userManager, ILogger<EmployeeController> logger, IProductService productService)
         {
             _userManager = userManager;
             _logger = logger;
+            _productService = productService;
         }
 
         
@@ -90,6 +94,53 @@ namespace PROG7311_WebApp.Controllers
 
             // If ModelState is invalid, or if there were errors, return the view with the model to display errors.
             return View(model);
+        }
+
+        // Displays all products with filtering options.
+        [HttpGet]
+        public async Task<IActionResult> ViewAllProducts(string? selectedFarmerId, string? selectedProductType, DateTime? selectedStartDate, DateTime? selectedEndDate)
+        {
+            _logger.LogInformation("Employee accessing ViewAllProducts page. Filters: FarmerId={FarmerId}, Type={ProductType}, Start={StartDate}, End={EndDate}",
+                selectedFarmerId, selectedProductType, selectedStartDate, selectedEndDate);
+
+            try
+            {
+                // Get products based on filters using the service
+                var products = await _productService.GetFilteredProductsAsync(
+                    selectedFarmerId,
+                    selectedProductType,
+                    selectedStartDate,
+                    selectedEndDate);
+
+                // Get data for filter dropdowns
+                var farmers = await _userManager.GetUsersInRoleAsync("Farmer");
+                var categories = await _productService.GetDistinctProductCategoriesAsync();
+
+                var viewModel = new ViewAllProductsViewModel
+                {
+                    Products = products,
+                    // Create SelectList for farmers dropdown. Value is Farmer's ID, Text is Farmer's FullName.
+                    Farmers = new SelectList(farmers.OrderBy(f => f.FullName), "Id", "FullName", selectedFarmerId),
+                    // Create SelectList for categories dropdown. Value and Text are both the category name.
+                    Categories = new SelectList(categories, selectedProductType),
+
+                    // Pass current filter values back to the view to repopulate the form
+                    SelectedFarmerId = selectedFarmerId,
+                    SelectedProductType = selectedProductType,
+                    SelectedStartDate = selectedStartDate,
+                    SelectedEndDate = selectedEndDate
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while fetching products for ViewAllProducts page.");
+                // It's good practice to have an error view or handle this gracefully.
+                // For now, returning a simple error message or redirecting.
+                TempData["ErrorMessage"] = "An error occurred while loading product data. Please try again.";
+                return RedirectToAction("Index"); // Redirect to employee dashboard on error
+            }
         }
     }
 }

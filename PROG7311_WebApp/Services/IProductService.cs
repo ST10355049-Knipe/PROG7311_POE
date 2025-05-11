@@ -12,5 +12,13 @@ namespace PROG7311_WebApp.Services
         //Task UpdateProductAsync(Product product); // Update an existing product
        // Task DeleteProductAsync(int id); // Delete a product by its ID
         //Task <IEnumerable<Product>> GetAllProductsAsync(); // Fetch all products for employee view
+
+        Task<IEnumerable<Product>> GetFilteredProductsAsync(
+            string? selectedFarmerId = null,
+            string? productType = null, 
+            DateTime? startDate = null,
+            DateTime? endDate = null); // Fetch products based on filters
+
+        Task<IEnumerable<string>> GetDistinctProductCategoriesAsync(); // Fetch distinct product categories
     }
 }
