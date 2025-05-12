@@ -17,58 +17,83 @@
     --button-primary-hover-bg: #217a70;
     --button-secondary-bg: #6c757d; /* Standard Bootstrap secondary */
     --button-secondary-hover-bg: #5a6268;
+    --card-bg: #ffffff; /* Card background */
+    --hero-bg: var(--primary-color); /* Hero section background */
 }
 
 /* Apply a base font and background color */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--light-bg);
-    color: var(--dark-text);
-    padding-bottom: 60px; 
+
+html, body {
+    height: 100%; 
     display: flex;
     flex-direction: column;
-    min-height: 100vh; 
+    margin: 0; 
 }
 
-
-.body-content {
+.page-content-wrapper {
     flex-grow: 1; 
-    padding-top: 1rem;
-    padding-bottom: 1rem;
 }
+
+
+.page-content-wrapper {
+    flex-grow: 1; 
+}
+
+/*html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+}*/
 
 /* Header and Navbar Styling */
 .navbar-custom {
     background-color: var(--navbar-bg);
-    border-bottom: 1px solid #dee2e6; 
+    border-bottom: 1px solid #dee2e6;
 }
 
-    .navbar-custom .navbar-brand {
+.navbar-logo-img {
+    height: 35px;
+    width: auto;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.navbar-custom .navbar-brand-text {
+    color: var(--primary-color);
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.navbar-custom .navbar-brand:hover .navbar-brand-text {
+    color: var(--link-hover-color);
+}
+
+.navbar-custom .nav-link {
+    color: var(--navbar-text);
+    transition: color 0.2s ease-in-out;
+}
+
+    .navbar-custom .nav-link:hover,
+    .navbar-custom .nav-link:focus {
         color: var(--primary-color);
-        font-weight: bold;
     }
 
-        .navbar-custom .navbar-brand:hover {
-            color: var(--link-hover-color);
-        }
+.navbar-custom .navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.1);
+}
 
-    .navbar-custom .nav-link {
-        color: var(--navbar-text);
-        transition: color 0.2s ease-in-out;
-    }
+.navbar-custom .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(44, 62, 80, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
 
-        .navbar-custom .nav-link:hover,
-        .navbar-custom .nav-link:focus {
-            color: var(--primary-color);
-        }
-
-    .navbar-custom .navbar-toggler {
-        border-color: rgba(0, 0, 0, 0.1);
-    }
-
-    .navbar-custom .navbar-toggler-icon {
-        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(44, 62, 80, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    }
 
 /* Style the Login/Logout buttons slightly differently */
 .login-link {
@@ -87,16 +112,21 @@ body {
         text-decoration: none;
     }
 
-/* Footer Styling */
+/* Footer Styling*/ 
 .footer {
     background-color: var(--footer-bg);
     color: var(--footer-text);
     padding: 1rem 0;
     border-top: 1px solid #dee2e6;
-    line-height: 1.5;
+    line-height: 1.5; 
     margin-top: auto; 
     width: 100%;
     text-align: center;
+    flex-shrink: 0; 
+}
+
+footer.footer {
+    margin-top: auto; 
 }
 
     .footer a {
@@ -119,6 +149,9 @@ body {
     background-color: var(--button-primary-bg);
     border-color: var(--button-primary-bg);
     color: var(--light-text);
+    padding: 0.5rem 1rem; 
+    font-size: 1rem; 
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* Smooth transition */
 }
 
     .btn-primary:hover,
@@ -132,6 +165,9 @@ body {
     background-color: var(--button-secondary-bg);
     border-color: var(--button-secondary-bg);
     color: var(--light-text);
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
 
     .btn-secondary:hover,
@@ -166,9 +202,9 @@ body {
     background-color: rgba(42, 157, 143, 0.075); 
 }
 
-/* Alert styling improvements */
+/* Alert styling */
 .alert {
-    border-radius: 0.25rem; 
+    border-radius: 0.25rem; /* Standard Bootstrap rounding */
 }
 
 .alert-success {
@@ -188,3 +224,64 @@ body {
     border-color: #b6effb;
     color: #055160;
 }
+
+/* --- Login Page Specific Styles --- */
+.login-card {
+    background-color: var(--card-bg);
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.login-icon-placeholder .fa-leaf { 
+    color: var(--primary-color) !important;
+}
+
+.login-graphic {
+    max-width: 100px;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* --- Home Page Specific Styles --- */
+.hero-section {
+    background-color: var(--hero-bg);
+    /* Optional: Add a background image */
+    /* background-image: url('/images/hero-background.jpg'); */
+    /* background-size: cover; */
+    /* background-position: center; */
+    border-radius: 0 0 0.5rem 0.5rem; /* Rounded bottom corners */
+}
+
+    .hero-section h1 {
+        font-size: 2.8rem; /* Larger heading */
+    }
+
+    .hero-section .lead {
+        font-size: 1.2rem;
+        margin-bottom: 1.5rem;
+    }
+
+.featurette-heading {
+    font-weight: 300;
+    line-height: 1.2;
+    letter-spacing: -.05rem;
+}
+
+.featurette-divider {
+    border-top: 1px solid #eee;
+}
+
+.marketing .card {
+    transition: transform .2s ease-in-out, box-shadow .2s ease-in-out;
+}
+
+    .marketing .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15) !important;
+    }
+
+    .marketing .card i { /* Style icons in feature cards */
+        color: var(--primary-color);
+    }
