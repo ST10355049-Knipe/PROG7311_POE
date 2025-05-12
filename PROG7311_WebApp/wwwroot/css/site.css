@@ -1,22 +1,190 @@
-html {
-  font-size: 14px;
+/* site.css - Custom styles for Green Agri-Energy Connect */
+
+:root {
+    --primary-color: #2a9d8f; /* Teal green */
+    --secondary-color: #e9c46a; /* Sandy yellow */
+    --accent-color: #f4a261; /* Orange */
+    --light-bg: #f8f9fa; /* Light grey */
+    --dark-text: #212529; /* Dark grey/black */
+    --light-text: #ffffff;
+    --navbar-bg: #ffffff; /* White navbar background */
+    --navbar-text: #2c3e50; /* Dark blue-grey text for navbar */
+    --footer-bg: #f1f1f1; /* Light grey footer */
+    --footer-text: #555;
+    --link-color: #2a9d8f;
+    --link-hover-color: #217a70;
+    --button-primary-bg: #2a9d8f;
+    --button-primary-hover-bg: #217a70;
+    --button-secondary-bg: #6c757d; /* Standard Bootstrap secondary */
+    --button-secondary-hover-bg: #5a6268;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Apply a base font and background color */
 body {
-  margin-bottom: 60px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--light-bg);
+    color: var(--dark-text);
+    padding-bottom: 60px; 
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+
+.body-content {
+    flex-grow: 1; 
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+/* Header and Navbar Styling */
+.navbar-custom {
+    background-color: var(--navbar-bg);
+    border-bottom: 1px solid #dee2e6; 
+}
+
+    .navbar-custom .navbar-brand {
+        color: var(--primary-color);
+        font-weight: bold;
+    }
+
+        .navbar-custom .navbar-brand:hover {
+            color: var(--link-hover-color);
+        }
+
+    .navbar-custom .nav-link {
+        color: var(--navbar-text);
+        transition: color 0.2s ease-in-out;
+    }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .nav-link:focus {
+            color: var(--primary-color);
+        }
+
+    .navbar-custom .navbar-toggler {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-custom .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(44, 62, 80, 0.7)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+/* Style the Login/Logout buttons slightly differently */
+.login-link {
+    font-weight: 500;
+}
+
+.logout-button {
+    color: var(--navbar-text); 
+    padding: 0.5rem 1rem; 
+    text-decoration: none; 
+    background: none; 
+}
+
+    .logout-button:hover {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+
+/* Footer Styling */
+.footer {
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
+    padding: 1rem 0;
+    border-top: 1px solid #dee2e6;
+    line-height: 1.5;
+    margin-top: auto; 
+    width: 100%;
+    text-align: center;
+}
+
+    .footer a {
+        color: var(--link-color);
+        text-decoration: none;
+    }
+
+        .footer a:hover {
+            color: var(--link-hover-color);
+            text-decoration: underline;
+        }
+
+/* General Container adjustments */
+.container {
+    max-width: 1140px; 
+}
+
+/* Basic Button Styling */
+.btn-primary {
+    background-color: var(--button-primary-bg);
+    border-color: var(--button-primary-bg);
+    color: var(--light-text);
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+        background-color: var(--button-primary-hover-bg);
+        border-color: var(--button-primary-hover-bg);
+        color: var(--light-text);
+    }
+
+.btn-secondary {
+    background-color: var(--button-secondary-bg);
+    border-color: var(--button-secondary-bg);
+    color: var(--light-text);
+}
+
+    .btn-secondary:hover,
+    .btn-secondary:focus {
+        background-color: var(--button-secondary-hover-bg);
+        border-color: var(--button-secondary-hover-bg);
+        color: var(--light-text);
+    }
+
+/* Style form elements for consistency */
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(42, 157, 143, 0.25); 
+}
+
+.form-floating > label {
+    color: #6c757d; 
+}
+
+/* Table styling */
+.table {
+    background-color: #fff; 
+    border: 1px solid #dee2e6;
+}
+
+    .table thead {
+        background-color: #e9ecef; 
+        color: var(--dark-text);
+    }
+
+.table-hover tbody tr:hover {
+    background-color: rgba(42, 157, 143, 0.075); 
+}
+
+/* Alert styling improvements */
+.alert {
+    border-radius: 0.25rem; 
+}
+
+.alert-success {
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+    color: #0f5132;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+    color: #842029;
+}
+
+.alert-info {
+    background-color: #cff4fc;
+    border-color: #b6effb;
+    color: #055160;
 }
