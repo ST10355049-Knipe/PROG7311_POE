@@ -154,7 +154,37 @@ For users who do not have the .NET SDK or Visual Studio installed and want to qu
 * **NuGet Package Issues:** If you encounter build errors related to missing references, try right-clicking the solution in Visual Studio's Solution Explorer and selecting "Restore NuGet Packages."
 * **Ensure Correct .NET SDK:** Verify you have the .NET 8 SDK (version 8.0.300 or compatible) installed as listed in the Prerequisites.
 
+## 11. References
 
+Reference List:
+
+1.  Anderson, R. et al. (2024) *Introduction to Identity on ASP.NET Core*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-9.0&tabs=visual-studio (Accessed: 10 May 2025).
+
+2.  ByteHide (2023) *Mastering LINQ in C#: A Comprehensive Guide for Beginners and Beyond*. ByteHide Blog [Online]. Available at: https://www.bytehide.com/blog/linq-csharp (Accessed: 14 May 2025).
+
+3.  DotNetTutorials.net (n.d.) *UserManager, SignInManager and RoleManager in ASP.NET Core Identity*. DotNetTutorials.net [Online]. Available at: https://dotnettutorials.net/lesson/usermanager-signinmanager-rolemanager-in-asp-net-core-identity/ (Accessed: 10 May 2025).
+
+4.  Microsoft (2024) *Add, download, and delete custom user data to Identity in an ASP.NET Core project*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/add-user-data (Accessed: 10 May 2025)
+
+5.  Microsoft (2025) *Data Seeding*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding (Accessed: 11 May 2025).
+
+6.  Microsoft (2024) *Dependency injection in ASP.NET Core*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection (Accessed: 11 May 2025).
+
+7.  Microsoft (2023) *Loading Related Data - Eager loading*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/ef/core/querying/related-data/eager (Accessed: 10 May 2025). 
+
+8.  Microsoft (2023) *Manage user data in ASP.NET Core Identity*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/manage-user-data (Accessed: 10 May 2025).
+
+9.  Microsoft (2024) *Model validation in ASP.NET Core MVC and Razor Pages*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/aspnet/core/mvc/models/validation?view=aspnetcore-9.0 (Accessed: 11 May 2025).
+
+10. Microsoft (2023) *Overview of Entity Framework Core*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/ef/core/modeling/ (Accessed: 10 May 2025). 
+
+11. Microsoft (2021) *Querying Data*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/ef/core/querying/ (Accessed: 11 May 2025).
+
+12. Microsoft (2023) *Relationships*. Microsoft Learn [Online]. Available at: https://learn.microsoft.com/en-us/ef/core/modeling/relationships (Accessed: 12 May 2025).
+
+13. J, Roshan. (2023) *Users and Roles Seeding in ASP.NET Core Identity with Entity Framework Core: A Step-by-Step Guide*. Medium, 13 August [Online]. Available at: https://medium.com/@roshanj100/users-and-roles-seeding-in-asp-net-core-identity-with-entity-framework-core-a-step-by-step-guide-28e6f76a18db (Accessed: 10 May 2025).
+
+14. *(Conceptual Guidance) Various online tutorials and video resources (e.g., YouTube channels focusing on ASP.NET Core development) were consulted for general understanding of ASP.NET Core Identity concepts*
 
 
 
