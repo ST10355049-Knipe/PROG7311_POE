@@ -95,6 +95,7 @@ Follow these steps to get the prototype running:
 5.  **Run the Application:**
     * In Visual Studio, ensure your web application project (`PROG7311_WebApp`) is set as the startup project (usually by default if it's the only web project).
     * Press **F5** or click the "Start Debugging" button which looks like a green play icon.
+    * Using command line: type "dotnet build" -> "dotnet run"
     * Your default web browser will open, and the application should navigate to its home page
 
 ## 6. Building the Prototype
