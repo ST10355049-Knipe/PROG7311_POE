@@ -34,7 +34,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-
+                        @*https://www.youtube.com/watch?v=p6X-dDx6nQY&ab_channel=CodeHub*@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             @if (User.IsInRole("Employee"))
@@ -65,7 +65,7 @@
                         }
                     </ul>
 
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav align-items-center">
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
