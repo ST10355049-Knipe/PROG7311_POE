@@ -118,7 +118,34 @@ Follow these steps to get the prototype running:
 -   `/wwwroot`: Contains static client-side files such as CSS, JavaScript, and images.
 -   `/Migrations`: Contains Entity Framework Core migration files detailing database schema changes over time.
 
-## 9. Run Executable only: 
+## 9. Quick Run (Self Contained Executable only): 
+
+For users who do not have the .NET SDK or Visual Studio installed and want to quickly run it to see the prototype. **Please note this is for Windows x64 only**.
+
+**Note:** This is for demonstration purposes only, if you want to see the code, please follow the "Getting Started" Instructions to set up the project from the source.
+
+**To run the self containedd version:**
+
+1.  **Download and Extract:**
+    * Download the `PROG7311_WebApp_Windows_x64_SelfContained.zip` file.
+    * Extract all contents of the ZIP file to a new folder on your computer (e.g., `C:\AgriEnergyPrototype`).
+
+2.  **Run the Application:**
+    * Navigate into the folder where you extracted the files.
+    * Find and double-click the `PROG7311_WebApp.exe` file.
+
+3.  **Access in Browser:**
+    * A console window will appear. This window is the Kestrel web server running the application. Do not close this window while using the application.
+    * Wait for a message similar to `Now listening on: http://localhost:5000` or `Now listening on: https://localhost:5001` to appear in the console window.
+    * Open your preferred web browser (e.g., Chrome, Firefox, Edge).
+    * In the address bar, type the URL shown in the console window (e.g., `http://localhost:5000` or `https://localhost:5001`).
+
+4.  **Using the Application:**
+    * You can now use the application as described in the "Features Implemented" and "User Roles & Test Credentials" sections.
+    * The application will use its own `Local.db` SQLite database file located within the extracted folder.
+
+5.  **To Stop the Application:**
+    * Simply close the console window that appeared when you ran `PROG7311_WebApp.exe`.
 
 ## 10. Troubleshooting
 
