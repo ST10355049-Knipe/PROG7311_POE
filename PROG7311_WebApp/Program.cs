@@ -57,6 +57,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IProductService, ProductService>(); // Register the ProductService for dependency injection
+builder.Services.AddScoped<IUserService, UserService>(); //Register the UserService 
 
 var app = builder.Build();
 

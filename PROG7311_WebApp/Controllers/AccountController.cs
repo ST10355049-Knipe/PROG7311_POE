@@ -1,140 +1,90 @@
-﻿using Microsoft.AspNetCore.Identity;      // Core namespace for ASP.NET Core Identity, including SignInManager and UserManager.
+﻿using Microsoft.AspNetCore.Identity; // Still needed for SignInResult
 using Microsoft.AspNetCore.Mvc;
-using PROG7311_WebApp.Models;             // For ApplicationUser and LoginViewModel.
-using System.Threading.Tasks;             // For asynchronous operations like Login and Logout.
+using PROG7311_WebApp.Models;
+using PROG7311_WebApp.Services; // Now using our custom service
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-
 
 namespace PROG7311_WebApp.Controllers
 {
     public class AccountController : Controller
     {
-        // Readonly fields for injected Identity services and logger.
-        // _userManager is used for user-related operations (though less in this controller, more in Employee/Farmer).
-        // _signInManager is crucial here for handling user sign-in and sign-out processes.
-        // _logger is for recording important events or errors during account operations.
-        // Overview of these managers: https://dotnettutorials.net/lesson/usermanager-signinmanager-rolemanager-in-asp-net-core-identity/
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        // To follow my lecturer's feedback, I've moved the direct calls to SignInManager
+        // into a custom service. This controller now only depends on IUserService.
+        private readonly IUserService _userService;
         private readonly ILogger<AccountController> _logger;
 
-        // Constructor for dependency injection.
-        // ASP.NET Core's DI system provides instances of UserManager, SignInManager, and ILogger.
-        // This is a standard way to get access to necessary services.
-        // The concept of injecting services like SignInManager is fundamental to ASP.NET Core Identity.
-        // General Identity introduction Ref: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-9.0&tabs=visual-studio
-        // Conceptual explanation (though older): https://www.youtube.com/watch?v=TfarnVqnhX0&ab_channel=kudvenkat (covers injecting services)
-        public AccountController(UserManager<ApplicationUser> userManager,
-                                 SignInManager<ApplicationUser> signInManager,
-                                 ILogger<AccountController> logger)
+        // The constructor is now simpler, only injecting the services this controller directly uses.
+        public AccountController(IUserService userService, ILogger<AccountController> logger)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _userService = userService;
             _logger = logger;
         }
 
         // GET: /Account/Login
-        // This action displays the login form to the user.
-        // It can also receive a 'returnUrl' if the user was redirected from a page that requires authentication.
+        // This action's job is just to display the login form.
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
-            // Store the returnUrl in ViewData to pass it to the Login view.
-            // The view's form will then include this returnUrl when posting back,
-            // so the user can be redirected appropriately after a successful login.
+            // Storing the returnUrl so we know where to send the user after they log in.
             ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         // POST: /Account/Login
-        // This action processes the data submitted from the login form.
-        // [ValidateAntiForgeryToken] attribute helps prevent Cross-Site Request Forgery (CSRF) attacks
-        // by ensuring the form submission is legitimate.
+        // This action handles the login form submission.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            // If returnUrl is null or empty, default to the application's homepage.
-            // Url.Content("~/") generates a root-relative path to the application's base.
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/"); // Default to homepage if no returnUrl.
 
-            // ModelState.IsValid checks if the submitted data (from LoginViewModel)
-            // passes the validation rules defined by DataAnnotations.
+            // The controller's first job is to check if the incoming data from the form is valid.
             if (ModelState.IsValid)
             {
-                // Attempt to sign in the user using the email (as username) and password.
-                // _signInManager.PasswordSignInAsync is the core method for this.
-                // - model.Email: The username (we use email).
-                // - model.Password: The password entered by the user.
-                // - model.RememberMe: If true, a persistent cookie is created.
-                // - lockoutOnFailure: true is a security best practice, it locks the user out
-                //   after a configured number of failed login attempts.
-                // Details on SignInManager Ref: https://dotnettutorials.net/lesson/usermanager-signinmanager-rolemanager-in-asp-net-core-identity/
-                // General login flow in Identity Ref: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-9.0&tabs=visual-studio
-                var result = await _signInManager.PasswordSignInAsync(
-                    model.Email, // Using Email as UserName for login
-                    model.Password,
-                    model.RememberMe,
-                    lockoutOnFailure: true);
+                // The controller now delegates the actual work of logging in to the UserService.
+                // It doesn't need to know about SignInManager or password hashing anymore.
+                var result = await _userService.LoginUserAsync(model);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation($"User {model.Email} logged in successfully.");
-                    // LocalRedirect is used to prevent open redirect attacks. It ensures the
-                    // returnUrl is a local path within the application.
-                    return LocalRedirect(returnUrl);
+                    return LocalRedirect(returnUrl); // Using LocalRedirect for security.
                 }
-                // Handle other possible sign-in outcomes.
+
+                // The controller is still responsible for handling the result of the service call
+                // and updating the UI (ModelState) accordingly.
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning($"User account {model.Email} locked out due to too many failed attempts.");
+                    _logger.LogWarning($"User account {model.Email} locked out.");
                     ModelState.AddModelError(string.Empty, "This account has been locked out, please try again later.");
-                }
-                else if (result.RequiresTwoFactor)
-                {
-                    // This application does not currently implement Two-Factor Authentication (2FA),
-                    // but this check shows how Identity supports it.
-                    _logger.LogInformation($"User {model.Email} requires two-factor authentication.");
-                    return RedirectToAction("LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 }
                 else
                 {
-                    // Generic error message for other login failures (e.g., incorrect password).
                     ModelState.AddModelError(string.Empty, "Invalid login attempt. Please check your email and password.");
                 }
             }
 
-            // If ModelState is not valid (e.g., required fields missing) or if login failed,
-            // return the Login view with the current model. This allows validation errors
-            // to be displayed and the user to re-enter their details.
+            // If we get here, something failed, so we show the form again with error messages.
             return View(model);
         }
 
         // POST: /Account/Logout
-        // Handles the user logout process.
-        // Using [HttpPost] and [ValidateAntiForgeryToken] for logout is a security measure
-        // to prevent malicious sites from logging users out via GET requests.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // User.Identity?.Name gets the username of the currently logged-in user for logging purposes.
-            // The null-conditional operator (?.) is used in case User.Identity is null.
             var userName = User.Identity?.Name;
-
-            // _signInManager.SignOutAsync() clears the user's authentication cookie, effectively logging them out.
-            // More on SignInManager (Ref): https://dotnettutorials.net/lesson/usermanager-signinmanager-rolemanager-in-asp-net-core-identity/
-            await _signInManager.SignOutAsync();
+            // Just like login, logout logic is now handled by the service.
+            await _userService.LogoutUserAsync();
             _logger.LogInformation($"User {userName} logged out successfully.");
-
-            // After logout, redirect the user to a safe, public page, typically the homepage.
             return RedirectToAction("Index", "Home");
         }
 
         // GET: /Account/AccessDenied
-        // This action displays a page indicating that the currently authenticated user
-        // does not have the necessary permissions/roles to access a requested resource.
+        // Simple action to show the Access Denied view if a user is logged in
+        // but tries to access a page they don't have the role for.
         [HttpGet]
         public IActionResult AccessDenied()
         {
